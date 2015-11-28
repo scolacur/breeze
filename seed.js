@@ -22,21 +22,85 @@ var Promise = require('bluebird');
 var chalk = require('chalk');
 var connectToDb = require('./server/db');
 var User = Promise.promisifyAll(mongoose.model('User'));
+var Zone = Promise.promisifyAll(mongoose.model('Zone'));
+var Camera = Promise.promisifyAll(mongoose.model('Camera'));
+
+
 
 var seedUsers = function () {
 
     var users = [
         {
             email: 'testing@fsa.com',
-            password: 'password'
+            password: 'password',
+			plates: [
+				'YGA91B',
+				'ABCD12'
+			]
         },
         {
             email: 'obama@gmail.com',
-            password: 'potus'
+            password: 'potus',
+			plates: [
+				'LMNOP3'
+			]
         }
     ];
+    // return User.createAsync(users);
+	return Promise.resolve(User.create(users));
+};
 
-    return User.createAsync(users);
+var seedZones = function() {
+
+	return Promise.all([
+		User.findOne({email: 'testing@nsa.com'}).exec(),
+		User.findOne({email: 'obama@gmail.com'}).exec()
+		]).then(function(users){
+
+			var zones = [
+				{
+					name: 'Obama\'s Zone',
+					users: [
+						users[0]._id
+					]
+				},
+				{
+					name: 'testingFSA\'s Zone',
+					users: [
+						users[1]._id
+					]
+				},
+				{
+					name: 'Empty Zone'
+				}
+			];
+
+			// return Zone.createAsync(zones);
+			return Promise.resolve(Zone.create(zones));
+		});
+
+};
+
+var seedCameras = function() {
+	return Promise.all([
+		Zone.findOne({name: 'Obama\'s Zone'}).exec(),
+		Zone.findOne({name: 'testingFSA\'s Zone'}).exec()
+	]).then(function(zones){
+
+		var cameras = [
+			{
+				zone: zones[0]
+			},
+			{
+				zone: zones[1]
+			},
+			{
+				zone: zones[0]
+			}
+		];
+		// return Camera.createAsync(cameras);
+		return Promise.resolve(Camera.create(cameras));
+	});
 
 };
 
