@@ -31,7 +31,7 @@ var seedUsers = function () {
 
     var users = [
         {
-            email: 'testing@fsa.com',
+            email: 'testing@nsa.com',
             password: 'password',
 			plates: [
 				'YGA91B',
@@ -56,7 +56,7 @@ var seedZones = function() {
 		User.findOne({email: 'testing@nsa.com'}).exec(),
 		User.findOne({email: 'obama@gmail.com'}).exec()
 		]).then(function(users){
-
+			console.log("USERS: ",users);
 			var zones = [
 				{
 					name: 'Obama\'s Zone',
@@ -65,7 +65,7 @@ var seedZones = function() {
 					]
 				},
 				{
-					name: 'testingFSA\'s Zone',
+					name: 'testingNSA\'s Zone',
 					users: [
 						users[1]._id
 					]
@@ -84,7 +84,7 @@ var seedZones = function() {
 var seedCameras = function() {
 	return Promise.all([
 		Zone.findOne({name: 'Obama\'s Zone'}).exec(),
-		Zone.findOne({name: 'testingFSA\'s Zone'}).exec()
+		Zone.findOne({name: 'testingNSA\'s Zone'}).exec()
 	]).then(function(zones){
 
 		var cameras = [
@@ -105,14 +105,34 @@ var seedCameras = function() {
 };
 
 connectToDb.then(function () {
-    User.findAsync({}).then(function (users) {
+	return Promise.resolve(User.find().exec())
+    .then(function (users) {
         if (users.length === 0) {
             return seedUsers();
         } else {
             console.log(chalk.magenta('Seems to already be user data, exiting!'));
             process.kill(0);
         }
-    }).then(function () {
+    }).then(function(users){
+		return Zone.find().exec();
+	}).then(function(zones){
+		if (zones.length === 0) {
+			return seedZones();
+		} else {
+			console.log(chalk.magenta('Seems to already be zone data, exiting!'));
+			process.kill(0);
+		}
+	}).then(function(){
+		return Camera.find().exec();
+	}).then(function(cameras){
+		if (cameras.length === 0) {
+			return seedCameras();
+		} else {
+			console.log(chalk.magenta('Seems to already be camera data, exiting!'));
+			process.kill(0);
+		}
+	})
+	.then(function () {
         console.log(chalk.green('Seed successful!'));
         process.kill(0);
     }).catch(function (err) {
