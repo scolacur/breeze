@@ -23,7 +23,13 @@ var schema = new mongoose.Schema({
     },
     google: {
         id: String
-    }
+    },
+	plates: [{
+		type: String,
+		expiration: {
+			type: Date
+		}
+	}]
 });
 
 // generateSalt, encryptPassword and the pre 'save' and 'correctPassword' operations
