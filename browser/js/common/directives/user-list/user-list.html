@@ -1,0 +1,9 @@
+<div class="list-container">
+	<h2>Users</h2>
+	<div id="users">
+		<div ng-repeat="user in users | filter:userSearchText:false">
+			<h3>{{user.email}}</h3>
+			<p>Plates: {{user.plates}}</p>
+		</div>
+	</div>
+</div>

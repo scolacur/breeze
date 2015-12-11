@@ -1,4 +1,25 @@
-<section id="home">
-    <fullstack-logo></fullstack-logo>
-    <rando-greeting></rando-greeting>
-</section>
+<div id="home">
+	<div id="form-container">
+		<input type="text" ng-model="zoneSearchText" placeholder="Search All Zones">
+		<input type="text" ng-model="userSearchText" placeholder="Search All Users">
+		<input type="text" ng-model="cameraSearchText" placeholder="Search All Cameras">
+	</div>
+	<div id="plate-check">
+		<h3>Check if License Plate has Access to Zone</h3>
+		<form name="plateCheck" ng-submit="checkPlate(plateNumber, zoneId)" id="plate-check-form">
+			<input ng-model="plateNumber" placeholder="License Plate">
+			<input ng-model="zoneId" placeholder="Zone ID">
+			<button type="submit">Let me in?</button>
+		</form>
+		<div id="access-results">
+			<h2 id="access-granted" ng-show="submitted && access">Access Granted.</h2>
+			<h2 id="access-denied" ng-show="submitted && !access">Access Denied.</h2>
+		</div>
+
+	</div>
+	<div id="main-content">
+		<zone-list></zone-list>
+		<user-list></user-list>
+		<camera-list></camera-list>
+	</div>
+</div>

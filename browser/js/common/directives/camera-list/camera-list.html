@@ -1,0 +1,8 @@
+<div class="list-container">
+	<h2>Cameras</h2>
+	<div id="cameras">
+		<div ng-repeat="camera in cameras | filter:cameraSearchText:false">
+			<h3>{{camera.name}}</h3>
+			<p>Located in Zone: {{camera.zone}}</p>
+	</div>
+</div>

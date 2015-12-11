@@ -1,0 +1,10 @@
+<div class="list-container">
+	<h2>Zones</h2>
+	<div id="zones">
+		<div class="result-item" ng-repeat="zone in zones | filter:zoneSearchText:false">
+			<h3>{{zone.name}}</h3>
+			<p>ID: {{zone._id}}</p>
+			<p>Users: {{zone.users}}</p>
+		</div>
+	</div>
+</div>

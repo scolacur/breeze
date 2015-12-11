@@ -31,13 +31,21 @@ var seedUsers = function () {
 
     var users = [
         {
-            email: 'testing@nsa.com',
+            email: 't1@nsa.com',
             password: 'password',
 			plates: [
 				'YGA91B',
-				'ABCD12'
+				'J2GB1i'
 			]
         },
+		{
+			email: 't2@nsa.com',
+			password: 'pathword',
+			plates: [
+				'YGA94B',
+				'ABCDEF'
+			]
+		},
         {
             email: 'obama@gmail.com',
             password: 'potus',
@@ -53,7 +61,8 @@ var seedUsers = function () {
 var seedZones = function() {
 
 	return Promise.all([
-		User.findOne({email: 'testing@nsa.com'}).exec(),
+		User.findOne({email: 't1@nsa.com'}).exec(),
+		User.findOne({email: 't2@nsa.com'}).exec(),
 		User.findOne({email: 'obama@gmail.com'}).exec()
 		]).then(function(users){
 			console.log("USERS: ",users);
@@ -61,11 +70,17 @@ var seedZones = function() {
 				{
 					name: 'Obama\'s Zone',
 					users: [
+						users[2]._id
+					]
+				},
+				{
+					name: 't1\'s Zone',
+					users: [
 						users[0]._id
 					]
 				},
 				{
-					name: 'testingNSA\'s Zone',
+					name: 't2\'s Zone',
 					users: [
 						users[1]._id
 					]
@@ -83,18 +98,23 @@ var seedZones = function() {
 
 var seedCameras = function() {
 	return Promise.all([
+		Zone.findOne({name: 't1\'s Zone'}).exec(),
+		Zone.findOne({name: 't2\'s Zone'}).exec(),
 		Zone.findOne({name: 'Obama\'s Zone'}).exec(),
-		Zone.findOne({name: 'testingNSA\'s Zone'}).exec()
+		Zone.findOne({name: 'Empty Zone'}).exec()
 	]).then(function(zones){
 
 		var cameras = [
 			{
+				name: 't1C1',
 				zone: zones[0]
 			},
 			{
+				name: 't2C1',
 				zone: zones[1]
 			},
 			{
+				name: 't1C2',
 				zone: zones[0]
 			}
 		];
